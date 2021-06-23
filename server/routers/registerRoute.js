@@ -17,6 +17,7 @@ signupRoute.post('/', async (ctx, next) => {
       ...result,
     };
   }
+  console.log(result);
   await next();
 });
 

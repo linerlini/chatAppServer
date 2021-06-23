@@ -4,6 +4,7 @@ const {chatTBConnect, recordMessage} = require('../../../dataBaseInit/modules/ch
 
 const eventHandleMap = new Map();
 function pingpongHandle({data, ws}) {
+    console.log('pingpong')
     ws.send(JSON.stringify({
         type: wsEvent.PING_PONG,
         data: 'pong',
@@ -45,8 +46,8 @@ async function privateChatHandle({data, ws}) {
         const toAccountChatTBPromise = chatTBConnect(toAccount+'');
         const [fromAccountChatTB, toAccountChatTB] = await Promise.all([fromAccountChatTBPromise, toAccountChatTBPromise]);
         const [r1, r2] = await Promise.all([
-            recordMessage(toAccount, message, 0, toAccountChatTB),
-            recordMessage(fromAccount, message, 1, fromAccountChatTB),
+            recordMessage(toAccount, message, 0, toAccountChatTB, timeNow),
+            recordMessage(fromAccount, message, 1, fromAccountChatTB, timeNow),
         ]);
         ws.send(JSON.stringify({
             type: wsEvent.PRIVATE_CHAT_SEND_RESPONSE,

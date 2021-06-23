@@ -11,7 +11,6 @@ function initSocketConnect(account, device, ws) {
         oldWs.close();
         store.deleteUserConnect(account, device);
     }
-    console.log(device);
     // 通知其他设备，该账号在其他设备登陆
     const otherDeviceWs = store.getUserConnect(account, device ? 0 : 1);
     if (otherDeviceWs) {

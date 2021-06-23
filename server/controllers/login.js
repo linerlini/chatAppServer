@@ -2,6 +2,7 @@ const { User } = require('../../dataBaseInit/modules/users');
 const { friendTable } = require('../../dataBaseInit/modules/friends');
 const FriendInfo = require('../models/friendInfo');
 const jwt = require('../utils/jwt');
+const store = require('../../store');
 
 async function loginHandle(account, password) {
   const result = await getUserInfo({account, password});
@@ -86,6 +87,10 @@ async function getUserFirendAndChat(account) {
         relationship: accept,
       }));
     } else { 
+      let loginStatus = 0;
+      if (store.hasUserConnect(account)) {
+        loginStatus = 1
+      }
       groups[groupIndex - 1].push(new FriendInfo({
         account,
         name,
@@ -93,6 +98,7 @@ async function getUserFirendAndChat(account) {
         notAcceptWordCount,
         signature,
         groupIndex,
+        loginStatus,
       }));
     }
   });
@@ -140,6 +146,7 @@ async function getUserInfo({account, password, isRefresh}) {
     groupNames,
   };
 }
+
 module.exports = {
   loginHandle,
   loginRefreshHandle,
