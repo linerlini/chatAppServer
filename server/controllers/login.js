@@ -91,6 +91,14 @@ async function getUserFirendAndChat(account) {
       if (store.hasUserConnect(account)) {
         loginStatus = 1
       }
+      // 添加到好友记录
+      applyRecords.push(new FriendInfo({
+        account,
+        name,
+        signature,
+        relationship: 1,
+      }));
+      // 计算各个分组的好友
       groups[groupIndex - 1].push(new FriendInfo({
         account,
         name,

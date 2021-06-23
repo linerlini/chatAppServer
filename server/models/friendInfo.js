@@ -7,6 +7,7 @@ class FriendInfo {
     signature,
     relationship,
     groupIndex,
+    loginStatus,
   }) {
     this.account = account;
     this.name = name;
@@ -15,6 +16,7 @@ class FriendInfo {
     this.signature = signature;
     this.relationship = relationship;
     this.groupIndex = groupIndex;
+    this.loginStatus = loginStatus || 0;
   }
 }
 
