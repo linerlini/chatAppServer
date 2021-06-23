@@ -1,12 +1,10 @@
 const Koa = require('koa');
 const koaBody = require('koa-body');
 const cors = require('@koa/cors');
-const { Server } = require('socket.io');
 const http = require('http');
+const WebSocket = require('ws');
 const mainRouter = require('./server/routers/index');
 const { verifyMiddleware } = require('./server/middleware/verify');
-const { verify } = require('./server/utils/jwt');
-const initSocketConnect = require('./server/controllers/initSocketConnect');
 
 // koa主要的
 const app = new Koa();
@@ -18,30 +16,22 @@ app.use(koaBody({
 app.use(verifyMiddleware(['/login', '/register']));
 app.use(mainRouter.routes());
 app.use(mainRouter.allowedMethods());
-
+// http服务器
 const httpServer = http.createServer(app.callback());
-// socket.io初始化
-const socketOptions = {
+// websocket服务器
+const socketServer = new WebSocket.Server({
+  server: httpServer,
   path: '/chat',
-  cors: {
-    origin: '*',
+  verifyClient: ({req}) => {
+    console.log(req);
   },
-};
-const io = new Server(httpServer, socketOptions);
-io.use((socket, next) => {
-  const { token } = socket.handshake.auth;
-  verify(token)
-    .then((res) => {
-      socket.data.account = res.data;
-      next();
-    })
-    .catch(err => {
-      next(new Error(err));
-    });
 });
-global.io = io;
-// socket.io添加事件以及处理
-io.on('connection', initSocketConnect);
+socketServer.on('connection', (socket) => {
+  socket.on('message', (message) => {
+    console.log('receive message', message);
+  });
+  socket.send('hello client');
+})
 
 httpServer.listen(5001, () => {
   console.log('server listen 5001');

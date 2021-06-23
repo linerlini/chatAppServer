@@ -1,29 +1,9 @@
 const databaseOptions = {
   dialect: 'mysql',
-  host: 'localhost',
+  host: '119.29.189.246',
   database: 'mychat',
   username: 'root',
-  password: 'root123',
-  // retry: {
-  //   match: [
-  //       /ETIMEDOUT/,
-  //       /EHOSTUNREACH/,
-  //       /ECONNRESET/,
-  //       /ECONNREFUSED/,
-  //       /ETIMEDOUT/,
-  //       /ESOCKETTIMEDOUT/,
-  //       /EHOSTUNREACH/,
-  //       /EPIPE/,
-  //       /EAI_AGAIN/,
-  //       /SequelizeConnectionError/,
-  //       /SequelizeConnectionRefusedError/,
-  //       /SequelizeHostNotFoundError/,
-  //       /SequelizeHostNotReachableError/,
-  //       /SequelizeInvalidConnectionError/,
-  //       /SequelizeConnectionTimedOutError/
-  //   ],
-  //   max: 5
-  // },
+  password: 'lkk200033',
 };
 // 用于jwt验证
 const SECRET = 'lkk200033';
