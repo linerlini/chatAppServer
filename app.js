@@ -30,6 +30,7 @@ socketServer.on('connection', (socket) => {
   socket.on('message', (message) => {
     console.log('receive message', message);
   });
+  
   socket.send('hello client');
 })
 
