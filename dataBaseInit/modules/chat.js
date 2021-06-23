@@ -4,6 +4,7 @@ const { sequelize } = require('../index');
 const data = {
   friendaccount: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
   },
   word: {
     type: DataTypes.STRING,
@@ -11,13 +12,20 @@ const data = {
   isSend: {
     type: DataTypes.INTEGER,
   },
+  datetime: {
+    type: DataTypes.DATE,
+    primaryKey: true,
+  },
+  // uid: {
+  //   type: DataTypes.UUIDV1,
+  // },
 };
 
 async function createChatTable(account) {
   class Chat extends Model {};
   Chat.init(data, {
     sequelize,
-    createdAt: 'datetime',
+    createdAt: false,
     updatedAt: false,
     tableName: `${account}chat`,
   });
@@ -25,4 +33,15 @@ async function createChatTable(account) {
   console.log(`${account}聊天表关联`);
   return Chat;
 }
-module.exports.createChatTable = createChatTable;
+
+function recordMessage(account, message, isSend, tb, time) {
+  return tb.create({
+    friendaccount: account,
+    word: message,
+    isSend,
+    datetime: time,
+  });
+}
+
+module.exports.chatTBConnect = createChatTable;
+exports.recordMessage = recordMessage;

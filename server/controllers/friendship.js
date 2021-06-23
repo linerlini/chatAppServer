@@ -1,4 +1,6 @@
 const {friendTable} = require('../../dataBaseInit/modules/friends');
+const store = require('../../store');
+const { wsEvent } = require('../../config');
 
 async function addFriend({ account, addAccount, name, addName, group, signature, friendSignature }) {
   try {
@@ -27,6 +29,20 @@ async function addFriend({ account, addAccount, name, addName, group, signature,
     addUser.signature = signature;
     user.save();
     addUser.save();
+    // 如果对方在线就通知他
+    if (store.hasUserConnect(addAccount)) {
+      const wsArr = store.getUserConnect(addAccount);
+      wsArr.forEach((ws) => {
+        ws.send(JSON.stringify({
+          type: wsEvent.RECEIVE_FRIEND_APPLY,
+          data: {
+            fromAccount: account,
+            fromName: name,
+            fromSignature: signature,
+          },
+        }));
+      });
+    }
     return true;
   } catch (err) {
     console.log(err);
@@ -58,6 +74,18 @@ async function acceptOrReject({ account, addAccount, type, options }) {
     user.accept = 2;
     addUser.accept = 3;
   }
+  // 如果申请人在线就通知他
+  if (store.hasUserConnect(addAccount)) {
+    const wsArr = store.getUserConnect(addAccount);
+    wsArr.forEach((ws) => {
+      ws.send(JSON.stringify({
+        type: wsEvent.RECEIVE_FRIEND_APPLY,
+        data: {
+          fromAccount: account,
+        },
+      }));
+    });
+  }  
   user.save();
   addUser.save();
 }
