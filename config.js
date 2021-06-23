@@ -1,9 +1,9 @@
 const databaseOptions = {
   dialect: 'mysql',
-  host: '119.29.189.246',
+  host: 'localhost',
   database: 'mychat',
   username: 'root',
-  password: 'lkk200033',
+  password: 'root123',
 };
 // 用于jwt验证
 const SECRET = 'lkk200033';

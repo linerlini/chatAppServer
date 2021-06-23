@@ -22,15 +22,18 @@ const httpServer = http.createServer(app.callback());
 const socketServer = new WebSocket.Server({
   server: httpServer,
   path: '/chat',
-  verifyClient: ({req}) => {
-    console.log(req);
-  },
 });
+
 socketServer.on('connection', (socket) => {
   socket.on('message', (message) => {
-    console.log('receive message', message);
+    data = JSON.parse(message);
+    if (data.type === 'pingpong') {
+      socket.send(JSON.stringify({
+        type: 'pingpong',
+        data: 'pong',
+      }));
+    }
   });
-  socket.send('hello client');
 })
 
 httpServer.listen(5001, () => {
