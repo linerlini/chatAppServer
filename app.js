@@ -5,6 +5,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const mainRouter = require('./server/routers/index');
 const { verifyMiddleware } = require('./server/middleware/verify');
+const { initSocketConnect } = require('./server/controllers/initSocketConnect');
 
 // koa主要的
 const app = new Koa();
@@ -22,18 +23,14 @@ const httpServer = http.createServer(app.callback());
 const socketServer = new WebSocket.Server({
   server: httpServer,
   path: '/chat',
+  clientTracking: true,
 });
 
-socketServer.on('connection', (socket) => {
-  socket.on('message', (message) => {
-    data = JSON.parse(message);
-    if (data.type === 'pingpong') {
-      socket.send(JSON.stringify({
-        type: 'pingpong',
-        data: 'pong',
-      }));
-    }
-  });
+socketServer.on('connection', (socket, req) => {
+  const queryString = new URLSearchParams(req.url.substring(5));
+  const account = queryString.get('account');
+  const device = queryString.get('device');
+  initSocketConnect(account, device, socket);
 })
 
 httpServer.listen(5001, () => {

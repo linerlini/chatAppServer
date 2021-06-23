@@ -25,4 +25,14 @@ async function createChatTable(account) {
   console.log(`${account}聊天表关联`);
   return Chat;
 }
-module.exports.createChatTable = createChatTable;
+
+function recordMessage(account, message, isSend, tb) {
+  tb.create({
+    friendaccount: account,
+    word: message,
+    isSend,
+  });
+}
+
+module.exports.chatTBConnect = createChatTable;
+exports.recordMessage = recordMessage;
