@@ -46,8 +46,8 @@ async function privateChatHandle({data, ws}) {
         const toAccountChatTBPromise = chatTBConnect(toAccount+'');
         const [fromAccountChatTB, toAccountChatTB] = await Promise.all([fromAccountChatTBPromise, toAccountChatTBPromise]);
         const [r1, r2] = await Promise.all([
-            recordMessage(toAccount, message, 0, toAccountChatTB, timeNow),
-            recordMessage(fromAccount, message, 1, fromAccountChatTB, timeNow),
+            recordMessage(fromAccount, message, 0, toAccountChatTB, timeNow),
+            recordMessage(toAccount, message, 1, fromAccountChatTB, timeNow),
         ]);
         ws.send(JSON.stringify({
             type: wsEvent.PRIVATE_CHAT_SEND_RESPONSE,

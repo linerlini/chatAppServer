@@ -99,7 +99,7 @@ async function getUserFirendAndChat(account) {
         relationship: 1,
       }));
       // 计算各个分组的好友
-      groups[groupIndex - 1].push(new FriendInfo({
+      groups[groupIndex].push(new FriendInfo({
         account,
         name,
         lastword,

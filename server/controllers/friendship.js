@@ -79,9 +79,10 @@ async function acceptOrReject({ account, addAccount, type, options }) {
     const wsArr = store.getUserConnect(addAccount);
     wsArr.forEach((ws) => {
       ws.send(JSON.stringify({
-        type: wsEvent.RECEIVE_FRIEND_APPLY,
+        type: wsEvent.RECEIVE_FRIEND_APPLY_RESULT,
         data: {
           fromAccount: account,
+          result: +type === 1 ? true : false,
         },
       }));
     });

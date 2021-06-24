@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 const { sequelize } = require('../index');
 
 const data = {
@@ -14,11 +14,11 @@ const data = {
   },
   datetime: {
     type: DataTypes.DATE,
-    primaryKey: true,
   },
-  // uid: {
-  //   type: DataTypes.UUIDV1,
-  // },
+  uid: {
+    type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
+  },
 };
 
 async function createChatTable(account) {
